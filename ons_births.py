@@ -29,6 +29,8 @@ recon = np.einsum('i,ji->j', birth_fft, np.exp(expon))/len(FFT)
 ## # Why are there imag parts at rel 1e-5?
 recon = np.real_if_close(recon, tol=1e-4*np.mean(np.abs(recon.real)))
 assert (np.isreal(recon)).all()
+## # Calling this a "power spectrum" doesn't
+## # really make sense, but whatever.
 est_PS = np.abs(birth_fft)**2
 est_PS = est_PS[1:]
 
