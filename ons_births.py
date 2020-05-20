@@ -43,7 +43,7 @@ ax2 = plt.subplot(212)
 
 ks = np.arange(len(FFT))/len(FFT)
 xs = 1./ks[1:]
-ax1.plot(xs, est_PS, '-', label='Birth Data Power Spectrum')
+ax1.plot(xs, est_PS, '-', label='Birth Data $|FFT|^2$')
 ax1.plot(xs, est_PS_smthd, '-', label='Smoothed')
 ax1.plot(xs, est_PS-est_PS_smthd, '-', label='Difference')
 ax1.legend()
