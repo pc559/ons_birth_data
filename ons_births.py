@@ -1,3 +1,10 @@
+## # Despite the averaging, there is still a large signal at 75 and 125 days.
+## # Is this real, eg more babies born in some season...?
+## # Should probably add k-dep error bars, coming from the fact this is only
+## # the average of a few years.
+## # It's probably that, because the xmas signal is still there, and very strong,
+## # it hasn't been averaged away yet.
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -41,16 +48,19 @@ est_PS_smthd = est_PS_smthd[1:]
 ax1 = plt.subplot(211)
 ax2 = plt.subplot(212)
 
-ks = np.arange(len(FFT))/len(FFT)
-xs = 1./ks[1:]
-ax1.plot(xs, est_PS, '-', label='Birth Data $|FFT|^2$')
-ax1.plot(xs, est_PS_smthd, '-', label='Smoothed')
-ax1.plot(xs, est_PS-est_PS_smthd, '-', label='Difference')
+ax1.plot(days, birth_data, 'o', markersize=2, label='Birth Data')
+ax1.plot(days, birth_data_smthd, '-', label='Smoothed')
+ax1.plot(cont_days, recon, '-', label='Reconstructed from FFT (consistency test)')
 ax1.legend()
 
-ax2.plot(cont_days, recon, '-', label='Reconstructed from FFT')
-ax2.plot(days, birth_data, 'o', markersize=2, label='Birth Data')
-ax2.plot(days, birth_data_smthd, '-', label='Smoothed')
+ks = np.arange(len(FFT))/len(FFT)
+xs = 1./ks[1:]
+skip_ends = slice(1, -1)
+
+ax2.plot(xs[skip_ends], est_PS[skip_ends], '-', label='Birth Data $|FFT|^2$')
+ax2.plot(xs[skip_ends], est_PS_smthd[skip_ends], '-', label='Smoothed')
+ax2.plot(xs[skip_ends], est_PS[skip_ends]-est_PS_smthd[skip_ends], '-', label='Difference')
+ax2.vlines(7, np.min(est_PS[skip_ends]), np.max(est_PS[skip_ends]), colors='k', linestyles='dashed', label='7 days', alpha=0.5)
 ax2.legend()
 
 plt.show()
